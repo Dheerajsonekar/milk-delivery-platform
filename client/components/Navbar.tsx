@@ -2,30 +2,13 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useAuth } from '@/context/auth-context'
 import api from '@/lib/axios'
 
 export default function Navbar() {
   const pathname = usePathname()
   const router = useRouter()
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [loading, setLoading] = useState(true)
-
-  // 🔐 Check if user is logged in
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await api.get('/check-auth') 
-        setIsLoggedIn(res.data?.authenticated)
-      } catch {
-        setIsLoggedIn(false)
-      } finally {
-        setLoading(false)
-      }
-    }
-    checkAuth()
-  }, [])
+  const { isLoggedIn, setIsLoggedIn, loading } = useAuth()
 
   const handleLogout = async () => {
     try {
@@ -42,7 +25,7 @@ export default function Navbar() {
       active ? 'text-green-700 underline' : 'text-gray-600'
     }`
 
-  if (loading) return null // ⏳ Wait for auth check
+  if (loading) return null // Wait for auth state to load
 
   return (
     <nav className="bg-white shadow-md py-3 px-6 sticky top-0 z-50">

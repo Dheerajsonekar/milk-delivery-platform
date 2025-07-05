@@ -3,9 +3,11 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import api from '@/lib/axios'
+import {useAuth} from "@/context/auth-context"
 
 export default function LoginPage() {
   const router = useRouter()
+  const {setIsLoggedIn} = useAuth();
 
   const [form, setForm] = useState({
     email: '',
@@ -27,6 +29,8 @@ export default function LoginPage() {
       if (res.status === 200) {
         // Optional: redirect based on user role if available
         const role = res.data.user?.role || 'customer'
+
+        setIsLoggedIn(true);
 
         if (role === 'vendor') {
           router.push('/vendor/dashboard')

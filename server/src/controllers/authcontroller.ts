@@ -4,14 +4,14 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
 
-const JWT_SECRET = process.env.JWT_SECRET as string ;
+
 
 export const register = async (req: Request, res: Response) => {
   try {
     const { name, email, password, role, address, secretCode } = req.body;
 
     if (role === 'admin') {
-      if ( secretCode !== process.env.ADMIN_SECRET) {
+      if (secretCode !== process.env.ADMIN_SECRET) {
         return res.status(403).json({ message: 'Invalid admin secret code' })
       }
     }
@@ -40,9 +40,13 @@ export const login = async (req: Request, res: Response) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
+    if (!process.env.JWT_SECRET) {
+      throw new Error('JWT_SECRET is not defined');
+    }
+
     const token = jwt.sign(
       { id: user._id, role: user.role },
-      JWT_SECRET,
+      process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
 
@@ -57,8 +61,9 @@ export const login = async (req: Request, res: Response) => {
     // ✅ Send user info only (no token in body)
     return res.status(200).json({ user });
 
-  } catch (err) {
-    return res.status(500).json({ message: 'Login failed', error: err });
+  } catch (err: any) {
+    console.error('Login error:', err);
+    return res.status(500).json({ message: 'Login failed', error: err.message || err });
   }
 };
 
@@ -72,10 +77,10 @@ export const logout = (req: Request, res: Response) => {
 
 export const checkAuth = (req: Request, res: Response) => {
   const token = req.cookies?.token
-  if (!token) return res.json({ authenticated: false })
+  if (!token) return res.json({ authenticated: false , message:"no token found"})
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET)
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
     return res.json({ authenticated: true, user: decoded })
   } catch {
     return res.json({ authenticated: false })
