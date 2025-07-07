@@ -1,85 +1,55 @@
 'use client'
+
 import { useEffect, useState } from 'react'
 import api from '@/lib/axios'
-import ProductCard from '@/components/ProductCard'
 
-export default function VendorProducts() {
+export default function VendorProductsPage() {
   const [products, setProducts] = useState([])
-  const [form, setForm] = useState({
-    name: '', price: '', unit: 'liter', description: ''
-  })
-
-  const fetchVendorProducts = async () => {
-    const res = await api.get('/products/vendor')
-    setProducts(res.data)
-  }
 
   useEffect(() => {
-    fetchVendorProducts()
+    const fetchProducts = async () => {
+      const res = await api.get('/products/vendor')
+      setProducts(res.data)
+    }
+    fetchProducts()
   }, [])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this product?')) return
+    try {
+      await api.delete(`/products/${id}`)
+      setProducts(products.filter((p) => p._id !== id))
+    } catch {
+      alert('Failed to delete product')
+    }
   }
 
-  const handleAddProduct = async (e: React.FormEvent) => {
-    e.preventDefault()
-    await api.post('/products', form)
-    setForm({ name: '', price: '', unit: 'liter', description: '' })
-    fetchVendorProducts()
-  }
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Manage Products</h2>
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4">My Products</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {products.map((product: any) => (
+          <div key={product._id} className="border p-4 rounded shadow">
+            <h3 className="text-lg font-bold">{product.name}</h3>
+            <p className="text-gray-600">{product.description}</p>
+            <p className="mt-1">₹{product.price} / {product.unit}</p>
+            <p className="text-sm text-green-700">Available: {product.quantity} {product.unit}</p>
+            <button
+              className="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 text-sm"
+              onClick={() => router.push(`/vendor/products/edit/${product._id}`)}
+            >
+              Edit
+            </button>
 
-      <form onSubmit={handleAddProduct} className="mb-6 space-y-3">
-        <input
-          type="text"
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          placeholder="Name"
-          required
-          className="border w-full p-2 rounded"
-        />
-        <input
-          type="number"
-          name="price"
-          value={form.price}
-          onChange={handleChange}
-          placeholder="Price"
-          required
-          className="border w-full p-2 rounded"
-        />
-        <select
-          name="unit"
-          value={form.unit}
-          onChange={handleChange}
-          className="border w-full p-2 rounded"
-        >
-          <option value="liter">Liter</option>
-          <option value="kg">Kg</option>
-          <option value="piece">Piece</option>
-        </select>
-        <textarea
-          name="description"
-          value={form.description}
-          onChange={handleChange}
-          placeholder="Description"
-          className="border w-full p-2 rounded"
-        />
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          Add Product
-        </button>
-      </form>
+            <button
+              className="bg-red-600 text-white mx-2 px-2 py-1 rounded hover:bg-red-700 text-sm"
+              onClick={() => handleDelete(product._id)}
+            >
+              Delete
+            </button>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {products.map((p: any) => (
-          <ProductCard key={p._id} product={p} />
+          </div>
         ))}
       </div>
     </div>

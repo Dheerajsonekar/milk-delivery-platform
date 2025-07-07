@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+import DynamicNavbar from '@/components/DynamicNavbar'
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/context/auth-context";
 
@@ -31,7 +31,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} flex flex-col min-h-screen`}
       >
         <AuthProvider>
-          <Navbar />
+          <DynamicNavbar />
           <main className="flex-grow">{children}</main>
           <Footer />
         </AuthProvider>

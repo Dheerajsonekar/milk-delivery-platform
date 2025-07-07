@@ -97,9 +97,9 @@ export default function AdminRegisterPage() {
         </button>
 
         <p className="text-sm text-center text-gray-600 mt-3">
-          Not an Admin?{' '}
-          <Link href="/register" className="text-blue-600 hover:underline">
-            Register as User
+          Already an Admin?{' '}
+          <Link href="/admin/login" className="text-blue-600 hover:underline">
+            login as admin
           </Link>
         </p>
       </form>

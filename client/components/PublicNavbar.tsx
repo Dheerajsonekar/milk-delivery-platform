@@ -1,0 +1,23 @@
+'use client'
+
+import Link from 'next/link'
+
+export default function PublicNavbar() {
+  return (
+    <nav className="bg-yellow-100 text-gray-800 px-6 py-3 flex justify-between items-center shadow">
+      <Link href="/" className="text-xl font-bold text-green-700">
+        FreshMilk
+      </Link>
+      <div className="flex gap-4 items-center">
+        <Link href="/products" className="hover:text-green-700">Products</Link>
+        <Link href="/login" className="hover:text-green-700">Customer Login</Link>
+        <Link href="/login" className="hover:text-green-700">Vendor Login</Link>
+        <Link href="/register">
+          <button className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 transition">
+            Register
+          </button>
+        </Link>
+      </div>
+    </nav>
+  )
+}

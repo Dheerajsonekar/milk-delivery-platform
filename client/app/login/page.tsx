@@ -8,6 +8,7 @@ import {useAuth} from "@/context/auth-context"
 export default function LoginPage() {
   const router = useRouter()
   const {setIsLoggedIn} = useAuth();
+  const { refreshAuth } = useAuth();
 
   const [form, setForm] = useState({
     email: '',
@@ -31,12 +32,11 @@ export default function LoginPage() {
         const role = res.data.user?.role || 'customer'
 
         setIsLoggedIn(true);
+         refreshAuth();
 
         if (role === 'vendor') {
           router.push('/vendor/dashboard')
-        } else if (role === 'admin') {
-          router.push('/admin/dashboard')
-        }
+        } 
         else {
           router.push('/customer/dashboard')
         }
@@ -87,12 +87,7 @@ export default function LoginPage() {
             Register
           </Link>
         </p>
-        <p className="text-sm text-center text-gray-600 mt-2">
-          Are you an Admin?{' '}
-          <Link href="/admin/register" className="text-red-600 hover:underline font-semibold">
-            Register here
-          </Link>
-        </p>
+        
       </form>
     </div>
   )

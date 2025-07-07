@@ -77,12 +77,27 @@ export const logout = (req: Request, res: Response) => {
 
 export const checkAuth = (req: Request, res: Response) => {
   const token = req.cookies?.token
-  if (!token) return res.json({ authenticated: false , message:"no token found"})
+  if (!token) return res.json({ authenticated: false, message: "no token found" })
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
-    return res.json({ authenticated: true, user: decoded })
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as { id: string, role: string }
+
+    return res.json({
+      authenticated: true,
+      role: decoded.role, 
+      user: decoded,       
+    })
   } catch {
     return res.json({ authenticated: false })
+  }
+}
+
+export const getProfile = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password') // hide password
+    if (!user) return res.status(404).json({ message: 'User not found' })
+    res.json(user)
+  } catch (err: any) {
+    res.status(500).json({ message: 'Failed to fetch profile', error: err.message })
   }
 }

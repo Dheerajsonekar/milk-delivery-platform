@@ -18,9 +18,9 @@ export default function CustomerDashboard() {
 
   const placeOrder = async (productId: string) => {
     try {
-      const res = await api.post('/orders', {
+      const res = await api.post('/orders/', {
         productId,
-        quantity: 1, // you can make this dynamic later
+        quantity: 1, 
       })
       alert('Order placed successfully!')
     } catch (err) {
@@ -31,8 +31,8 @@ export default function CustomerDashboard() {
   return (
     <div className="min-h-screen bg-green-50 py-10 px-4">
       <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold text-green-700">Customer Dashboard</h1>
-        <p className="text-gray-600">Welcome! You can view your orders, subscriptions, and profile here.</p>
+        <h1 className="text-3xl font-bold text-green-700">Products</h1>
+         
       </div>
 
       {/* Product Listing */}

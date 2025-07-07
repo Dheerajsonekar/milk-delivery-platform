@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser'
 import authRoutes from './routes/authRoutes';
 import productRoutes from "./routes/productRoutes";
 import orderRoutes from './routes/orderRoutes';
+import adminRoutes from './routes/adminRoutes';
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use('/api', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/admin', adminRoutes);
 
 // TODO: Add product, cart, order, etc. routes here later
 

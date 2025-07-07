@@ -13,6 +13,25 @@ export const placeOrder = async (req: Request, res: Response) => {
   }
 }
 
+// Update order status (vendor only)
+export const updateOrderStatus = async (req: Request, res: Response) => {
+  try {
+    const vendorId = req.user.id
+    const { orderId, status } = req.body
+
+    const order = await Order.findOne({ _id: orderId, vendorId })
+    if (!order) return res.status(404).json({ message: 'Order not found or unauthorized' })
+
+    order.status = status
+    await order.save()
+
+    res.json({ message: 'Order status updated successfully', order })
+  } catch (err: any) {
+    res.status(500).json({ message: 'Failed to update status', error: err.message })
+  }
+}
+
+
 export const getCustomerOrders = async (req: Request, res: Response) => {
   try {
     const customerId = req.user.id
