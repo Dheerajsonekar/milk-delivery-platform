@@ -12,6 +12,16 @@ const orderSchema = new mongoose.Schema(
     ],
     totalAmount: { type: Number, required: true },
     status: { type: String, enum: ['pending', 'delivered'], default: 'pending' },
+    deliveryAddress: {
+      street: { type: String, required: true },
+      city: { type: String, required: true },
+      state: { type: String, required: true },
+      zipCode: { type: String, required: true },
+    },
+    
+    paymentStatus: { type: String, enum: ['paid', 'unpaid'], default: 'paid' },
+    vendorPaid: { type: Boolean, default: false },
+
   },
   { timestamps: true }
 )

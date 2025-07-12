@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import api from '@/lib/axios'
 import ProductCard from '@/components/ProductCard'
 import { useAuth } from '@/context/auth-context'
+import { useCart } from '@/context/cart-context'
 
 export default function HomePage() {
   const [products, setProducts] = useState([])

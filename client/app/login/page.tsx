@@ -38,7 +38,7 @@ export default function LoginPage() {
           router.push('/vendor/dashboard')
         } 
         else {
-          router.push('/customer/dashboard')
+          router.push('/customer/products')
         }
       }
     } catch (err: any) {

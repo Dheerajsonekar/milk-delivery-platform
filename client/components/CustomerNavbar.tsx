@@ -4,21 +4,16 @@ import Link from 'next/link'
 import { useHandleLogout } from '@/lib/handleLogout'
 import { ShoppingCart } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { useCart } from '@/context/cart-context'
 
 export default function CustomerNavbar() {
   const logout = useHandleLogout()
-  const [cartCount, setCartCount] = useState(0)
 
-  useEffect(() => {
-    const updateCart = () => {
-      const cart = JSON.parse(localStorage.getItem('cart') || '[]')
-      setCartCount(cart.length)
-    }
 
-    updateCart()
-    window.addEventListener('storage', updateCart)
-    return () => window.removeEventListener('storage', updateCart)
-  }, [])
+  const { cart } = useCart()
+  const count = cart.reduce((sum, item) => sum + item.quantity, 0)
+
+
 
   return (
     <nav className="bg-green-600 text-white px-6 py-3 flex justify-between items-center shadow">
@@ -28,18 +23,19 @@ export default function CustomerNavbar() {
 
       <div className="flex gap-6 items-center">
         <Link href="/customer/products">Products</Link>
-        <Link href="/customer/orders">My Orders</Link>
-        <Link href="/customer/profile">Profile</Link>
+        <Link href="/customer/orders">Orders</Link>
+
 
         {/* Cart Icon */}
         <Link href="/customer/cart" className="relative">
-          <ShoppingCart className="w-6 h-6 text-white hover:text-gray-200" />
-          {cartCount > 0 && (
-            <span className="absolute -top-2 -right-2 text-xs bg-red-500 text-white px-1.5 py-0.5 rounded-full">
-              {cartCount}
+          <ShoppingCart className="w-6 h-6" />
+          {count > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-1.5 py-0.5 rounded-full">
+              {count}
             </span>
           )}
         </Link>
+        <Link href="/customer/profile">Profile</Link>
 
         <button
           onClick={logout}

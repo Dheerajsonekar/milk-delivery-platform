@@ -3,10 +3,14 @@ import { Request, Response } from 'express'
 
 export const placeOrder = async (req: Request, res: Response) => {
   try {
-    const { products, vendorId, totalAmount } = req.body
+    const { products, vendorId, totalAmount, deliveryAddress } = req.body
     const customerId = req.user.id
 
-    const order = await Order.create({ products, vendorId, totalAmount, customerId })
+    if (deliveryAddress.street === '' || deliveryAddress.city === '' || deliveryAddress.state === '' || deliveryAddress.zipCode === '') {
+      return res.status(400).json({ message: 'Delivery address is incomplete' })
+    }
+
+    const order = await Order.create({ products, vendorId, totalAmount, customerId, deliveryAddress })
     return res.status(201).json(order)
   } catch (err: any) {
     return res.status(500).json({ message: 'Failed to place order', error: err.message })
@@ -45,7 +49,8 @@ export const getCustomerOrders = async (req: Request, res: Response) => {
 export const getVendorOrders = async (req: Request, res: Response) => {
   try {
     const vendorId = req.user.id
-    const orders = await Order.find({ vendorId }).populate('products.productId')
+    const orders = await Order.find({ vendorId })
+      .populate('products.productId', 'name')
     return res.json(orders)
   } catch (err: any) {
     return res.status(500).json({ message: 'Failed to get vendor orders', error: err.message })

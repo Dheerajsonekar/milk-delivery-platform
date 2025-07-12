@@ -2,9 +2,12 @@
 
 import { useEffect, useState } from 'react'
 import api from '@/lib/axios'
+import { useRouter } from 'next/navigation'
+import { Plus } from 'lucide-react'
 
 export default function VendorProductsPage() {
   const [products, setProducts] = useState([])
+  const router = useRouter()
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -51,6 +54,13 @@ export default function VendorProductsPage() {
 
           </div>
         ))}
+        <div
+          onClick={() => router.push('/vendor/products/add')}
+          className="flex flex-col justify-center items-center border-2 border-dashed border-gray-300 rounded p-6 cursor-pointer hover:border-green-500 transition"
+        >
+          <Plus size={32} className="text-green-600" />
+          <p className="mt-2 text-green-600 font-medium">Add Product</p>
+        </div>
       </div>
     </div>
   )

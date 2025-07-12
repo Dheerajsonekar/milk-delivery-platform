@@ -15,8 +15,8 @@ export default function VendorOrders() {
   }, [])
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Customer Orders</h2>
+    <div className="max-w-xl mx-auto p-6 bg-white rounded shadow mt-6">
+      <h2 className=" text-center text-2xl font-bold mb-4">Customer Orders</h2>
 
       {orders.length === 0 ? (
         <p>No orders found.</p>
