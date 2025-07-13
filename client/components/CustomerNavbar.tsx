@@ -22,8 +22,7 @@ export default function CustomerNavbar() {
       </Link>
 
       <div className="flex gap-6 items-center">
-        <Link href="/customer/products">Products</Link>
-        <Link href="/customer/orders">Orders</Link>
+        
 
 
         {/* Cart Icon */}
@@ -35,6 +34,8 @@ export default function CustomerNavbar() {
             </span>
           )}
         </Link>
+        <Link href="/customer/products">Products</Link>
+        <Link href="/customer/orders">Orders</Link>
         <Link href="/customer/profile">Profile</Link>
 
         <button

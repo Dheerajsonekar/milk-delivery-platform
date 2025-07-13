@@ -36,7 +36,9 @@ export default function LoginPage() {
 
         if (role === 'vendor') {
           router.push('/vendor/dashboard')
-        } 
+        }else if(role === 'admin'){
+          router.push('/admin/dashboard')
+        }
         else {
           router.push('/customer/products')
         }

@@ -6,6 +6,7 @@ import CustomerNavbar from './CustomerNavbar'
 import VendorNavbar from './VendorNavbar'
 import AdminNavbar from './AdminNavbar'
 
+
 export default function DynamicNavbar() {
   const { loading, isLoggedIn, userRole } = useAuth()
 
@@ -22,7 +23,8 @@ export default function DynamicNavbar() {
   if (!isLoggedIn) return <PublicNavbar />
   if (userRole === 'customer') return <CustomerNavbar />
   if (userRole === 'vendor') return <VendorNavbar />
-  if (userRole === 'admin') return <AdminNavbar />
+  if( userRole === 'admin') return <AdminNavbar />
+
 
   return null
 }

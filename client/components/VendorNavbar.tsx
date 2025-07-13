@@ -12,10 +12,7 @@ export default function VendorNavbar() {
         FreshMilk Vendor
       </Link>
       <div className="flex gap-6 items-center">
-        <Link href="/vendor/dashboard">Dashboard</Link>
-        <Link href="/vendor/products">Products</Link>
-        <Link href="/vendor/orders"> Orders</Link>
-        <Link href="/vendor/payments">Payment</Link>
+       
         <Link href="/vendor/profile">Profile</Link>
         <button
           onClick={logout}

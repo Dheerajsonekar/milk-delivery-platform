@@ -7,20 +7,16 @@ export default function AdminNavbar() {
   const logout = useHandleLogout()
 
   return (
-    <nav className="bg-gray-800 text-white px-6 py-3 flex justify-between items-center shadow">
+    <nav className="bg-gray-900 text-white px-6 py-3 flex justify-between items-center shadow">
       <Link href="/admin/dashboard" className="text-xl font-bold">
-        Admin Panel
+        Admin
       </Link>
       <div className="flex gap-6 items-center">
         
         
         
-        <Link href="/admin/dashboard">Dashboard</Link>
-        <Link href="/admin/vendors">Vendors</Link>
-        <Link href="/admin/customers">Customers</Link>
-        <Link href="/admin/products">Products</Link>
-        <Link href="/admin/orders">Orders</Link>
-        <Link href="/admin/subscriptions">Subscriptions</Link>
+        
+        <Link href="/admin/profile">Profile</Link>
 
         <button
           onClick={logout}

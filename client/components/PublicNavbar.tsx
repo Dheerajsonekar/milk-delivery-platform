@@ -9,8 +9,7 @@ export default function PublicNavbar() {
         FreshMilk
       </Link>
       <div className="flex gap-4 items-center">
-        <Link href="/products" className="hover:text-green-700">Products</Link>
-       
+        
         <Link href="/login">
           <button className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 transition">
             Login/Register

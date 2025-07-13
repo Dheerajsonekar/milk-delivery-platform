@@ -1,17 +1,45 @@
 'use client'
+import { useEffect, useState } from 'react'
+import api from '@/lib/axios'
 
 
+export default function AdminDashboardPage() {
 
-export default function AdminDashboard() {
+  const [stats, setStats] = useState<any>(null)
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      const res = await api.get('/admin/stats')
+      setStats(res.data)
+    }
+    fetchStats()
+  }, [])
+
+  if (!stats) return <p className="p-6">Loading dashboard...</p>
+
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-green-50">
-     
-      <div className="text-center p-6 bg-white shadow rounded max-w-xl w-full">
-        <h1 className="text-3xl font-bold mb-2 text-green-700">Admin Dashboard</h1>
-        <p className="text-gray-600">Welcome! You can view your orders, subscriptions, and profile here.</p>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
+      <div className="bg-white shadow rounded p-4">
+        <h2 className="text-lg font-bold text-gray-700">Total Vendors</h2>
+        <p className="text-3xl mt-2 text-green-700">{stats.totalVendors}</p>
       </div>
-      
-      
+      <div className="bg-white shadow rounded p-4">
+        <h2 className="text-lg font-bold text-gray-700">Total Customers</h2>
+        <p className="text-3xl mt-2 text-green-700">{stats.totalCustomers}</p>
+      </div>
+      <div className="bg-white shadow rounded p-4">
+        <h2 className="text-lg font-bold text-gray-700">Total Orders</h2>
+        <p className="text-3xl mt-2 text-green-700">{stats.totalOrders}</p>
+      </div>
+      <div className="bg-white shadow rounded p-4">
+        <h2 className="text-lg font-bold text-gray-700">Total Products</h2>
+        <p className="text-3xl mt-2 text-green-700">{stats.totalProducts}</p>
+      </div>
+      <div className="bg-white shadow rounded p-4">
+        <h2 className="text-lg font-bold text-gray-700">Pending Payouts</h2>
+        <p className="text-3xl mt-2 text-red-600">₹ {stats.pendingPayoutAmount}</p>
+      </div>
     </div>
   )
 }

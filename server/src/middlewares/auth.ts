@@ -23,3 +23,13 @@ export const verifyAdmin = (req: Request, res: Response, next: NextFunction) => 
 
   next()
 }
+
+export const verifyVendor = (req: Request, res: Response, next: NextFunction) => {
+  const user = req.user
+
+  if (!user || user.role !== 'vendor') {
+    return res.status(403).json({ message: 'Access denied. Vendors only.' })
+  }
+
+  next()
+}

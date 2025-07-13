@@ -1,10 +1,17 @@
 import express from 'express'
 import { getPaymentSummary, requestPayout } from '../controllers/vendorController'
-import { verifyToken } from '../middlewares/auth'
+import { verifyToken, verifyVendor } from '../middlewares/auth'
+import { getVendorCustomers } from '../controllers/vendorCustomerController'
 
 const router = express.Router()
 
-router.get('/payment-summary', verifyToken, getPaymentSummary) // ✅ Summary
-router.post('/request-payout', verifyToken, requestPayout)     // ✅ Request payout
+//vendor customer page
+router.get('/customers', verifyToken, verifyVendor, getVendorCustomers)
+
+// vendor payment summary
+router.get('/payment-summary', verifyToken, verifyVendor, getPaymentSummary) 
+
+//vendor payout request
+router.post('/request-payout', verifyToken, verifyVendor, requestPayout)     
 
 export default router
