@@ -1,9 +1,11 @@
-// app/vendor/reports/page.tsx
 'use client'
 
 import { useEffect, useState } from 'react'
 import axios from '@/lib/axios'
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, Legend,
+  PieChart, Pie, Cell, ResponsiveContainer
+} from 'recharts'
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28BFE']
 
@@ -30,6 +32,8 @@ export default function VendorReportsPage() {
     { name: 'Loyal', value: report.loyalCustomers },
   ]
 
+  const isTrendValidArray = Array.isArray(report.orderTrends)
+
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold">Vendor Report Overview</h1>
@@ -42,11 +46,17 @@ export default function VendorReportsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Customer Types Pie Chart */}
         <div className="bg-white p-4 shadow rounded">
           <h3 className="font-semibold mb-2">Customer Types</h3>
           <ResponsiveContainer width="100%" height={250}>
             <PieChart>
-              <Pie data={customerPieData} dataKey="value" nameKey="name" outerRadius={80}>
+              <Pie
+                data={customerPieData}
+                dataKey="value"
+                nameKey="name"
+                outerRadius={80}
+              >
                 {customerPieData.map((_, idx) => (
                   <Cell key={idx} fill={COLORS[idx % COLORS.length]} />
                 ))}
@@ -57,20 +67,26 @@ export default function VendorReportsPage() {
           </ResponsiveContainer>
         </div>
 
+        {/* Order Trends Bar Chart */}
         <div className="bg-white p-4 shadow rounded">
           <h3 className="font-semibold mb-2">Orders Trend</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={report.orderTrends}>
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="orders" fill="#00C49F" />
-            </BarChart>
-          </ResponsiveContainer>
+          {isTrendValidArray ? (
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={report.orderTrends}>
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="orders" fill="#00C49F" />
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <p className="text-gray-500">No order trend data available.</p>
+          )}
         </div>
       </div>
 
+      {/* Top Products */}
       <div className="bg-white p-6 rounded shadow">
         <h3 className="text-xl font-semibold mb-3">Top Selling Products</h3>
         <div className="overflow-x-auto">
@@ -83,13 +99,21 @@ export default function VendorReportsPage() {
               </tr>
             </thead>
             <tbody>
-              {report.topProducts.map((prod: any, idx: number) => (
-                <tr key={idx} className="border-b">
-                  <td className="p-2">{prod.name}</td>
-                  <td className="p-2">{prod.sold}</td>
-                  <td className="p-2">{prod.stock}</td>
+              {report.topProducts?.length > 0 ? (
+                report.topProducts.map((prod: any, idx: number) => (
+                  <tr key={idx} className="border-b">
+                    <td className="p-2">{prod.name}</td>
+                    <td className="p-2">{prod.sold}</td>
+                    <td className="p-2">{prod.stock}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={3} className="p-2 text-center text-gray-500">
+                    No product data available.
+                  </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

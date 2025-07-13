@@ -5,9 +5,12 @@ import { getVendorCustomers } from '../controllers/vendorCustomerController'
 import { getVendorDashboard } from '../controllers/vendorDashboardController'
 import { getVendorOrdersStats } from '../controllers/vendorOrderController'
 import { getVendorSubscription } from '../controllers/vendorSubscriptionController'
+import { getVendorReportSummary } from '../controllers/vendorReportController'
 
 const router = express.Router()
 
+// vendor report summary
+router.get('/reports/summary', verifyToken, verifyVendor, getVendorReportSummary)
 
 // vendor subscription
 router.get('/subscription', verifyToken, verifyVendor, getVendorSubscription)
