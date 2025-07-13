@@ -6,6 +6,11 @@ const subscriptionSchema = new mongoose.Schema(
     plan: { type: String, enum: ['basic', 'premium', 'pro'], required: true },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
+    paymentStatus: {
+      type: String,
+      enum: ['paid', 'unpaid'],
+      default: 'unpaid'
+    },
     isActive: { type: Boolean, default: true },
   },
   { timestamps: true }

@@ -18,9 +18,18 @@ const orderSchema = new mongoose.Schema(
       state: { type: String, required: true },
       zipCode: { type: String, required: true },
     },
-    
+
     paymentStatus: { type: String, enum: ['paid', 'unpaid'], default: 'paid' },
     vendorPaid: { type: Boolean, default: false },
+
+    cancelReason: {
+      type: String,
+      default: ''
+    },
+    feedback: {
+      rating: { type: Number, min: 1, max: 5 },
+      comment: { type: String }
+    }
 
   },
   { timestamps: true }

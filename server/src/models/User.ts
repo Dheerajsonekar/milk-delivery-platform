@@ -7,6 +7,11 @@ export interface IUser extends Document {
   password: string;
   role: 'admin' | 'vendor' | 'customer';
   address: string;
+  bankDetails: {
+    bankName?: string;
+    accountNumber?: string;
+    ifsc?: string;
+  };
 }
 
 const userSchema: Schema<IUser> = new Schema({
@@ -15,6 +20,11 @@ const userSchema: Schema<IUser> = new Schema({
   password: { type: String, required: true },
   role: { type: String, enum: ['admin', 'vendor', 'customer'], default: 'customer' },
   address: { type: String, default: '' },
+  bankDetails: {
+    bankName: { type: String },
+    accountNumber: { type: String },
+    ifsc: { type: String },
+  },
 }, {
   timestamps: true,
 });

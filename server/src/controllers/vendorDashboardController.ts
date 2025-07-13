@@ -1,5 +1,6 @@
 // vendorDashboardController.ts
 import { Request, Response } from 'express'
+import { fn, col } from 'sequelize'
 import Order from '../models/Order'
 import Product from '../models/Product'
 import Payout from '../models/Payout'
@@ -24,10 +25,14 @@ export const getVendorDashboard = async (req: Request, res: Response) => {
       { $group: { _id: null, total: { $sum: '$totalAmount' } } }
     ])
 
-    const pendingPayout = await Payout.aggregate([
-      { $match: { vendorId, status: 'requested' } },
-      { $group: { _id: null, total: { $sum: '$amount' } } }
-    ])
+
+
+
+    const pendingPayoutResult = await Payout.findAll({
+      where: { vendorId, status: 'requested' },
+      attributes: [[fn('SUM', col('amount')), 'total']],
+      raw: true
+    })
 
     const lowStockProducts = await Product.find({
       vendorId,
@@ -46,11 +51,12 @@ export const getVendorDashboard = async (req: Request, res: Response) => {
     res.json({
       pendingOrdersToday,
       totalEarnings: totalEarnings[0]?.total || 0,
-      pendingPayout: pendingPayout[0]?.total || 0,
+      pendingPayout: pendingPayoutResult[0]?.total || 0,
       loyalCustomers,
       lowStockProducts
     })
+
   } catch (err) {
-    res.status(500).json({ message: 'Failed to fetch vendor dashboard', error: err })
+    res.status(500).json({ message: 'Failed to fetch vendor dashboard', error: err.message })
   }
 }
