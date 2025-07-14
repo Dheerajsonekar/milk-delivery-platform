@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import api from '@/lib/axios'
-import ProductCard from '@/components/ProductCard' // ✅ import the reusable card
+import ProductCard from '@/components/ProductCard' 
 
 export default function CustomerProducts() {
   const [products, setProducts] = useState([])
@@ -17,7 +17,7 @@ export default function CustomerProducts() {
 
   const handleOrder = (product: any) => {
     alert(`Placing order for: ${product.name}`)
-    // 🧩 You can replace alert with actual order placement logic later
+    
   }
 
   return (

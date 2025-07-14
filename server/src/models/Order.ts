@@ -11,7 +11,11 @@ const orderSchema = new mongoose.Schema(
       },
     ],
     totalAmount: { type: Number, required: true },
-    status: { type: String, enum: ['pending', 'delivered'], default: 'pending' },
+    status: { type: String, enum: ['pending', 'delivered', 'cancelled'], default: 'pending' },
+    cancelReason: {
+      type: String,
+      default: ''
+    },
     deliveryAddress: {
       street: { type: String, required: true },
       city: { type: String, required: true },
@@ -22,10 +26,7 @@ const orderSchema = new mongoose.Schema(
     paymentStatus: { type: String, enum: ['paid', 'unpaid'], default: 'paid' },
     vendorPaid: { type: Boolean, default: false },
 
-    cancelReason: {
-      type: String,
-      default: ''
-    },
+
     feedback: {
       rating: { type: Number, min: 1, max: 5 },
       comment: { type: String }

@@ -6,8 +6,15 @@ import { getVendorDashboard } from '../controllers/vendorDashboardController'
 import { getVendorOrdersStats } from '../controllers/vendorOrderController'
 import { getVendorSubscription } from '../controllers/vendorSubscriptionController'
 import { getVendorReportSummary } from '../controllers/vendorReportController'
+import { markOrderAsDelivered } from '../controllers/vendorOrderController'
 
 const router = express.Router()
+
+
+
+// vendor mark as delivered
+router.patch('/:orderId/mark-delivered', verifyToken, verifyVendor, markOrderAsDelivered)
+
 
 // vendor report summary
 router.get('/reports/summary', verifyToken, verifyVendor, getVendorReportSummary)

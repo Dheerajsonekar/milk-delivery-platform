@@ -17,6 +17,7 @@ const ProductCard = ({ product }: { product: any }) => {
       <div>
         <h3 className="font-bold text-lg">{product.name}</h3>
         <p className="text-sm text-gray-500">{product.description}</p>
+        <p className="text-sm text-green-600">Vendor: {product.vendorId?.name || 'Unknown'}</p>
         <p className="mt-1">₹{product.price} / {product.unit}</p>
       </div>
 

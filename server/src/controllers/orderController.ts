@@ -35,14 +35,48 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
   }
 }
 
-
 export const getCustomerOrders = async (req: Request, res: Response) => {
   try {
     const customerId = req.user.id
-    const orders = await Order.find({ customerId }).populate('products.productId')
-    return res.json(orders)
+    const orders = await Order.find({ customerId })
+      .populate('products.productId', 'name price')
+      .sort({ createdAt: -1 })
+    
+    // Filter out products with null productId (deleted products)
+    const filteredOrders = orders.map(order => ({
+      ...order.toObject(),
+      products: order.products.filter(item => item.productId != null)
+    }))
+    
+    return res.json(filteredOrders)
   } catch (err: any) {
     return res.status(500).json({ message: 'Failed to get orders', error: err.message })
+  }
+}
+
+export const cancelCustomerOrder = async (req: Request, res: Response) => {
+  try {
+    const customerId = req.user.id
+    const { orderId } = req.params
+    const { reason } = req.body
+
+    const order = await Order.findOne({ _id: orderId, customerId })
+
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' })
+    }
+
+    if (order.status !== 'pending') {
+      return res.status(400).json({ message: 'Only pending orders can be cancelled' })
+    }
+
+    order.status = 'cancelled'
+    order.cancelReason = reason || 'No reason provided'
+    await order.save()
+
+    res.json({ message: 'Order cancelled successfully' })
+  } catch (err: any) {
+    res.status(500).json({ message: 'Failed to cancel order', error: err.message })
   }
 }
 
@@ -51,7 +85,14 @@ export const getVendorOrders = async (req: Request, res: Response) => {
     const vendorId = req.user.id
     const orders = await Order.find({ vendorId })
       .populate('products.productId', 'name')
-    return res.json(orders)
+    
+    // Filter out products with null productId
+    const filteredOrders = orders.map(order => ({
+      ...order.toObject(),
+      products: order.products.filter(item => item.productId != null)
+    }))
+    
+    return res.json(filteredOrders)
   } catch (err: any) {
     return res.status(500).json({ message: 'Failed to get vendor orders', error: err.message })
   }

@@ -20,6 +20,18 @@ export const getVendorDashboard = async (req: Request, res: Response) => {
       createdAt: { $gte: todayStart, $lte: todayEnd }
     })
 
+    const pendingOrders = await Order.find({
+      vendorId,
+      status: 'pending',
+      createdAt: { $gte: todayStart, $lte: todayEnd }
+    })
+      .populate('customerId', 'email')
+      .select('_id customerId createdAt totalAmount')
+      .sort({ createdAt: -1 })
+      .lean()
+
+
+
     const totalEarnings = await Order.aggregate([
       { $match: { vendorId, paymentStatus: 'paid' } },
       { $group: { _id: null, total: { $sum: '$totalAmount' } } }
@@ -50,6 +62,7 @@ export const getVendorDashboard = async (req: Request, res: Response) => {
 
     res.json({
       pendingOrdersToday,
+      pendingOrders,
       totalEarnings: totalEarnings[0]?.total || 0,
       pendingPayout: pendingPayoutResult[0]?.total || 0,
       loyalCustomers,

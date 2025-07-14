@@ -12,7 +12,7 @@ export const getPaymentSummary = async (req: Request, res: Response) => {
     // Total pending payout
     const pendingPayout = await Payout.aggregate([
       { $match: { vendorId, status: 'requested' } },
-      { $group: { _id: null, total: { $sum: '$amount' } } }
+      { $group: {  total: { $sum: '$amount' } } }
     ])
 
     // Fetch all payouts
