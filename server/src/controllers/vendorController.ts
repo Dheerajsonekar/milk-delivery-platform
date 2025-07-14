@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import Order from '../models/Order'
 import Payout from '../models/Payout'
 
-// GET /api/vendor/payment-summary
+
 export const getPaymentSummary = async (req: Request, res: Response) => {
   try {
     const vendorId = req.user.id
@@ -26,7 +26,7 @@ export const getPaymentSummary = async (req: Request, res: Response) => {
   }
 }
 
-// POST /api/vendor/request-payout
+
 export const requestPayout = async (req: Request, res: Response) => {
   try {
     const vendorId = req.user.id

@@ -12,7 +12,7 @@ import vendorRoutes from './routes/vendorRoutes';
 
 const app = express();
 
-// Load env variables
+
 
 
 // Middleware
@@ -31,6 +31,6 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/vendor', vendorRoutes);
 
-// TODO: Add product, cart, order, etc. routes here later
+
 
 export default app;

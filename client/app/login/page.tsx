@@ -28,7 +28,7 @@ export default function LoginPage() {
       const res = await api.post('/login', form)
 
       if (res.status === 200) {
-        // Optional: redirect based on user role if available
+        
         const role = res.data.user?.role || 'customer'
 
         setIsLoggedIn(true);

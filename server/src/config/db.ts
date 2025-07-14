@@ -1,4 +1,4 @@
-// server/src/config/db.ts
+
 import mongoose from 'mongoose';
 
 import { Sequelize } from 'sequelize';

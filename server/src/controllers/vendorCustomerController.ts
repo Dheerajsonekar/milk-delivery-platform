@@ -1,4 +1,4 @@
-// controllers/vendorCustomerController.ts
+
 
 import Order from '../models/Order'
 import User from '../models/User'
@@ -6,7 +6,7 @@ import { Request, Response } from 'express'
 
 export const getVendorCustomers = async (req: Request, res: Response) => {
   try {
-    const vendorId = req.user.id  // from auth middleware
+    const vendorId = req.user.id  
 
     // Find all orders for this vendor
     const orders = await Order.find({ vendorId }).populate('customerId', 'name email')

@@ -1,4 +1,4 @@
-// controllers/vendorOrderController.ts
+
 import { Request, Response } from 'express'
 import Order from '../models/Order'
 

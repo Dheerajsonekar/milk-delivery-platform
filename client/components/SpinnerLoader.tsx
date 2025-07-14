@@ -1,4 +1,4 @@
-// components/SpinnerLoader.tsx
+
 
 export default function SpinnerLoader() {
   return (

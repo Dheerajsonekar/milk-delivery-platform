@@ -1,4 +1,4 @@
-// lib/handleLogout.ts
+
 'use client'
 
 import api from '@/lib/axios'
@@ -10,7 +10,7 @@ export function useHandleLogout() {
   const { setIsLoggedIn, setUserRole } = useAuth()
 
   const logout = async () => {
-    await api.post('/logout') // your logout API clears cookie
+    await api.post('/logout') 
     setIsLoggedIn(false)
     setUserRole(null)
     router.push('/')

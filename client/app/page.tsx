@@ -31,7 +31,7 @@ export default function HomePage() {
         router.push('/login')
       } else {
         alert(`Placing order for: ${product.name}`)
-        // Replace with real order logic
+        
       }
     }
   }
@@ -46,7 +46,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-yellow-50 px-4 py-8">
-      {/* Only show product grid once auth is resolved */}
+      
       <div className="max-w-6xl mx-auto">
         <h2 className="text-2xl font-bold mb-6 text-center">
           {isLoggedIn ? 'Available Products' : 'FreshMilk Products'}
@@ -63,25 +63,7 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* {!isLoggedIn && (
-          <div className="mt-10 text-center">
-            <p className="text-gray-600 mb-4">To order, please login or register.</p>
-            <div className="flex gap-4 justify-center">
-              <button
-                onClick={() => router.push('/login')}
-                className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
-              >
-                Login
-              </button>
-              <button
-                onClick={() => router.push('/register')}
-                className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition"
-              >
-                Register
-              </button>
-            </div>
-          </div>
-        )} */}
+        
       </div>
     </div>
   )

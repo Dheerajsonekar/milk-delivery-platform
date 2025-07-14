@@ -19,29 +19,29 @@ router.get('/profile', verifyToken, verifyAdmin, getAdminProfile)
 //admin report
 router.get('/report', verifyToken, verifyAdmin, getAdminReport)
 
-// ✅ subscriptions
+//  subscriptions
 router.get('/subscriptions', verifyToken, verifyAdmin, getAllSubscriptions)
 router.patch('/subscriptions/:id', verifyToken, verifyAdmin, updateSubscriptionStatus)
 
 
-// ✅ Dashboard Stats
+//  Dashboard Stats
 router.get('/stats', verifyToken, verifyAdmin, getDashboardStats)
 
 
 
-// ✅ Vendor
+//  Vendor
 router.get('/vendors', verifyToken, verifyAdmin, getAllVendors)
 
-// ✅ Customers
+//  Customers
 router.get('/customers', verifyToken, verifyAdmin, getAllCustomers)
 
-// ✅ Products
+//  Products
 router.get('/products', verifyToken, verifyAdmin, getAllAdminProducts)
 
-// ✅ Orders
+//  Orders
 router.get('/orders', verifyToken, verifyAdmin, getAllOrdersAdmin)
 
-// ✅ Payouts (already present)
+//  Payouts (already present)
 router.get('/payouts', verifyToken, verifyAdmin, getAllPayouts)
 router.patch('/payouts/:id', verifyToken, verifyAdmin, updatePayoutStatus)
 

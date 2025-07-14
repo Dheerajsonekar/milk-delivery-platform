@@ -1,4 +1,4 @@
-// src/controllers/vendorPayoutController.ts
+
 
 import { Request, Response } from 'express'
 import Payout from '../models/Payout'
@@ -50,7 +50,7 @@ export const requestPayout = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'No unpaid earnings available for payout' })
     }
 
-    // Optional: Fetch bank details from vendor profile
+    //  Fetch bank details from vendor profile
     const vendor = await User.findById(vendorId)
     const bankDetails = vendor?.bankDetails || {}
 

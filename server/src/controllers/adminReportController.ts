@@ -27,7 +27,7 @@ export const getAdminReport = async (req: Request, res: Response) => {
       createdAt: { $gte: today }
     })
 
-    const totalProfit = totalRevenue * 0.1 // assuming 10% profit margin
+    const totalProfit = totalRevenue * 0.1 
 
     res.json({
       totalRevenue,

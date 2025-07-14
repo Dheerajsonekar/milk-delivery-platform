@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 export const createProduct = async (req: Request, res: Response) => {
   try {
     const { name, price, unit, quantity , description, image } = req.body
-    const vendorId = req.user.id // from auth middleware
+    const vendorId = req.user.id 
 
     const product = await Product.create({ name, price, unit, quantity,  description, image, vendorId })
     return res.status(201).json(product)

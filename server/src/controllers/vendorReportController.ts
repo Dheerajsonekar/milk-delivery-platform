@@ -1,4 +1,4 @@
-// src/controllers/vendorReportController.ts
+
 import { Request, Response } from 'express'
 import Order from '../models/Order'
 import Product from '../models/Product'

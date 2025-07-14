@@ -1,4 +1,4 @@
-// vendorDashboardController.ts
+
 import { Request, Response } from 'express'
 import { fn, col } from 'sequelize'
 import Order from '../models/Order'

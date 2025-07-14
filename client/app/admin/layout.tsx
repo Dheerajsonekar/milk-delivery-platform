@@ -11,7 +11,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname()
   const router = useRouter()
 
-  // Protect admin pages from non-admins
+  
   useEffect(() => {
     if (!loading && (!isLoggedIn || userRole !== 'admin')) {
       router.push('/login')
