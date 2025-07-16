@@ -16,16 +16,25 @@ const orderSchema = new mongoose.Schema(
       type: String,
       default: ''
     },
-    deliveryAddress: {
+   
+
+    paymentStatus: { type: String, enum: ['paid', 'unpaid'], default: 'paid' },
+    vendorPaid: { type: Boolean, default: false },
+
+     deliveryAddress: {
       street: { type: String, required: true },
       city: { type: String, required: true },
       state: { type: String, required: true },
       zipCode: { type: String, required: true },
     },
 
-    paymentStatus: { type: String, enum: ['paid', 'unpaid'], default: 'paid' },
-    vendorPaid: { type: Boolean, default: false },
-
+    deliveryBoyId: { type: mongoose.Schema.Types.ObjectId, ref: 'DeliveryBoy' },
+    
+    deliveryStatus: {
+      type: String,
+      enum: ['pending', 'picked', 'out-for-delivery', 'delivered'],
+      default: 'pending'
+    },
 
     feedback: {
       rating: { type: Number, min: 1, max: 5 },

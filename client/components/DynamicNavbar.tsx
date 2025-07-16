@@ -5,6 +5,7 @@ import PublicNavbar from './PublicNavbar'
 import CustomerNavbar from './CustomerNavbar'
 import VendorNavbar from './VendorNavbar'
 import AdminNavbar from './AdminNavbar'
+import DeliveryBoyNavbar from './DeliveryBoyNavbar'
 
 
 export default function DynamicNavbar() {
@@ -24,6 +25,7 @@ export default function DynamicNavbar() {
   if (userRole === 'customer') return <CustomerNavbar />
   if (userRole === 'vendor') return <VendorNavbar />
   if( userRole === 'admin') return <AdminNavbar />
+  if(userRole === 'deliveryBoy') return <DeliveryBoyNavbar />
 
 
   return null

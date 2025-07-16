@@ -8,7 +8,7 @@ import User from '../models/User';
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { name, email, password, role, address, secretCode } = req.body;
+    const { name, email, password, role, address, phone, secretCode } = req.body;
 
     if (role === 'admin') {
       if (secretCode !== process.env.ADMIN_SECRET) {
@@ -20,7 +20,7 @@ export const register = async (req: Request, res: Response) => {
     if (existingUser) return res.status(400).json({ message: 'User already exists' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ name, email, password: hashedPassword, role, address });
+    const newUser = new User({ name, email, password: hashedPassword, role, address, phone });
     await newUser.save();
 
     return res.status(201).json({ message: 'User registered successfully' });

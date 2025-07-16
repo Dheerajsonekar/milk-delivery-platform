@@ -33,3 +33,12 @@ export const verifyVendor = (req: Request, res: Response, next: NextFunction) =>
 
   next()
 }
+export const verifyDeliveryBoy = (req: Request, res: Response, next: NextFunction) => {
+  const user = req.user
+
+  if (!user || user.role !== 'deliveryBoy') {
+    return res.status(403).json({ message: 'Access denied. Delivery boy only.' })
+  }
+
+  next()
+}

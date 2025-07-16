@@ -13,6 +13,7 @@ export default function RegisterPage() {
     password: '',
     role: 'customer', 
     address: '',
+    phone:'',
   })
 
   const [loading, setLoading] = useState(false)
@@ -78,6 +79,7 @@ export default function RegisterPage() {
         >
           <option value="customer" >Customer</option>
           <option value="vendor">Vendor</option>
+          <option value="deliveryBoy">DeliveryBoy</option>
           
         </select>
 
@@ -86,6 +88,13 @@ export default function RegisterPage() {
           value={form.address}
           onChange={handleChange}
           placeholder="Address"
+          className="w-full p-2 border mb-4 rounded"
+        />
+        <input
+          name="phone"
+          value={form.phone}
+          onChange={handleChange}
+          placeholder="Phone no."
           className="w-full p-2 border mb-4 rounded"
         />
 

@@ -38,6 +38,8 @@ export default function LoginPage() {
           router.push('/vendor/dashboard')
         }else if(role === 'admin'){
           router.push('/admin/dashboard')
+        }else if(role === 'deliveryBoy'){
+          router.push('/deliveryBoy/dashboard')
         }
         else {
           router.push('/customer/products')
