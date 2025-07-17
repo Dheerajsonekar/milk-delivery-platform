@@ -17,9 +17,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000',
-       'https://milk-delivery-platform-sjlc.vercel.app'
-  ],
+  origin:'https://milk-delivery-platform-sjlc.vercel.app',
   credentials: true,
 }))
 app.use(express.json());
