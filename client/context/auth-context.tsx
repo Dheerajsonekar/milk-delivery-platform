@@ -4,7 +4,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import api from '@/lib/axios'
 
-type Role = 'customer' | 'vendor' | 'admin' | null
+type Role = 'customer' | 'vendor' | 'admin' | 'deliveryBoy' | null
 
 const AuthContext = createContext<{
   isLoggedIn: boolean
