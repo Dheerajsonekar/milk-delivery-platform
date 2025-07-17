@@ -4,6 +4,9 @@ import Order from '../models/Order'
 
 export const getVendorOrdersStats = async (req: Request, res: Response) => {
   try {
+    if(!req.user){
+      return res.status(401).json({ message: 'Unauthorized' })
+    }
     const vendorId = req.user.id
 
     const totalOrders = await Order.countDocuments({ vendorId })
@@ -37,7 +40,7 @@ export const getVendorOrdersStats = async (req: Request, res: Response) => {
       cancelReasonsCount,
       feedbacks
     })
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ message: 'Failed to fetch order stats', error: err.message })
   }
 }
@@ -46,6 +49,9 @@ export const getVendorOrdersStats = async (req: Request, res: Response) => {
 
 
 export const markOrderAsDelivered = async (req: Request, res: Response) => {
+   if(!req.user){
+      return res.status(401).json({ message: 'Unauthorized' })
+    }
   const vendorId = req.user.id
   const { orderId } = req.params
 
@@ -59,7 +65,7 @@ export const markOrderAsDelivered = async (req: Request, res: Response) => {
     await order.save()
 
     res.json({ success: true, message: 'Order marked as delivered' })
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: 'Failed to mark order', error: error.message })
   }
 }

@@ -3,6 +3,9 @@ import Subscription from '../models/Subscription'
 
 export const getVendorSubscription = async (req: Request, res: Response) => {
   try {
+    if(!req.user){
+      return res.status(401).json({message: 'Unauthorized access, user not found'})
+    }
     const vendorId = req.user.id
     const subscription = await Subscription.findOne({ vendorId })
 

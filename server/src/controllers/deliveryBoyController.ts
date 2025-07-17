@@ -5,6 +5,11 @@ import Order from '../models/Order';
 // GET /deliveryboy/orders
 export const getDeliveryOrders = async (req: Request, res: Response) => {
   try {
+
+    if (!req.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+
     const deliveryBoyId = req.user.id
     const orders = await Order.find({ deliveryBoyId }).populate('vendorId customerId')
     res.json(orders)
@@ -26,6 +31,10 @@ export const updateDeliveryStatus = async (req: Request, res: Response) => {
 
     if (status === 'delivered') {
       const deliveryBoy = await DeliveryBoy.findById(order.deliveryBoyId)
+
+       if (!deliveryBoy) {
+        return res.status(404).json({ message: 'Delivery boy not found' });
+      }
       deliveryBoy.isAvailable = true
       await deliveryBoy.save()
     }

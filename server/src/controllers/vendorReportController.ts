@@ -6,6 +6,9 @@ import { startOfDay, endOfDay, subDays } from 'date-fns'
 
 export const getVendorReportSummary = async (req: Request, res: Response) => {
   try {
+    if(!req.user) {
+      return res.status(401).json({ message: 'Unauthorized'})
+    }
     const vendorId = req.user.id
 
     // Revenue calculations

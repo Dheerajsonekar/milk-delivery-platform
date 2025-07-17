@@ -6,6 +6,9 @@ import { Request, Response } from 'express'
 
 export const getVendorCustomers = async (req: Request, res: Response) => {
   try {
+     if (!req.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
     const vendorId = req.user.id  
 
     // Find all orders for this vendor

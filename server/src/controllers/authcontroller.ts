@@ -2,8 +2,13 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { JwtPayload} from 'jsonwebtoken';
 import User from '../models/User';
 
+interface CustomJwtPayload extends JwtPayload {
+  id: string
+  role: string
+}
 
 
 export const register = async (req: Request, res: Response) => {
@@ -79,22 +84,42 @@ export const checkAuth = (req: Request, res: Response) => {
   const token = req.cookies?.token
   if (!token) return res.json({ authenticated: false, message: "no token found" })
 
+  // Check if JWT_SECRET exists
+  const jwtSecret = process.env.JWT_SECRET
+  if (!jwtSecret) {
+    console.error('JWT_SECRET is not defined in environment variables')
+    return res.status(500).json({ authenticated: false, message: "Server configuration error" })
+  }
+
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET) as { id: string, role: string }
+    // Verify and properly type the decoded token
+    const decoded = jwt.verify(token, jwtSecret) as CustomJwtPayload
+    
+    // Additional validation to ensure required fields exist
+    if (!decoded.id || !decoded.role) {
+      return res.json({ authenticated: false, message: "Invalid token payload" })
+    }
 
     return res.json({
       authenticated: true,
       role: decoded.role, 
       user: decoded,       
     })
-  } catch {
-    return res.json({ authenticated: false })
+  } catch (error) {
+    console.error('JWT verification failed:', error)
+    return res.json({ authenticated: false, message: "Invalid token" })
   }
 }
 
+
 export const getProfile = async (req: Request, res: Response) => {
   try {
-    const user = await User.findById(req.user.id).select('-password') // hide password
+
+    if (!req.user) {
+      return res.status(401).json({ message: 'User not authenticated' })
+    }
+
+    const user = await User.findById(req.user.id).select('-password')
     if (!user) return res.status(404).json({ message: 'User not found' })
     res.json(user)
   } catch (err: any) {

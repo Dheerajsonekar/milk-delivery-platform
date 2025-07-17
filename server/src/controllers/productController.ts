@@ -4,6 +4,9 @@ import { Request, Response } from 'express';
 export const createProduct = async (req: Request, res: Response) => {
   try {
     const { name, price, unit, quantity , description, image } = req.body
+     if (!req.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
     const vendorId = req.user.id 
 
     const product = await Product.create({ name, price, unit, quantity,  description, image, vendorId })
@@ -24,6 +27,9 @@ export const getAllProducts = async (req: Request, res: Response) => {
 
 export const getVendorProducts = async (req: Request, res: Response) => {
   try {
+     if (!req.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
     const vendorId = req.user.id
     const products = await Product.find({ vendorId })
     return res.json(products)
@@ -34,6 +40,9 @@ export const getVendorProducts = async (req: Request, res: Response) => {
 
 export const updateProduct = async (req: Request, res: Response) => {
   try {
+     if (!req.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
     const vendorId = req.user.id
     const productId = req.params.id
 
@@ -53,6 +62,9 @@ export const updateProduct = async (req: Request, res: Response) => {
 
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
+     if (!req.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
     const vendorId = req.user.id
     const productId = req.params.id
 

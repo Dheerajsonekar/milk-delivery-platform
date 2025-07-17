@@ -7,7 +7,6 @@
 
 # === Node Modules (client + server) ===
 **/node_modules/
-**/package-lock.json
 
 # === Logs ===
 logs

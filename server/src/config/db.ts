@@ -10,9 +10,9 @@ export const connectMongoDB = async () => {
     await mongoose.connect(process.env.MONGO_URI || '', {
       dbName: 'milkDelivery',
     });
-    console.log('✅ MongoDB connected');
+    console.log(' MongoDB connected');
   } catch (err) {
-    console.error('❌ MongoDB connection failed:', err);
+    console.error('MongoDB connection failed:', err);
     process.exit(1);
   }
 };
@@ -32,9 +32,9 @@ export const sequelize = new Sequelize(
 export const connectPostgres = async () => {
   try {
     await sequelize.authenticate();
-    console.log('✅ PostgreSQL connected');
+    console.log(' PostgreSQL connected');
   } catch (err) {
-    console.error('❌ PostgreSQL connection failed:', err);
+    console.error('PostgreSQL connection failed:', err);
     process.exit(1);
   }
 };

@@ -5,6 +5,9 @@ import Payout from '../models/Payout'
 
 export const getPaymentSummary = async (req: Request, res: Response) => {
   try {
+     if (!req.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
     const vendorId = req.user.id
 
     // Calculate pending delivered amount
@@ -29,6 +32,9 @@ export const getPaymentSummary = async (req: Request, res: Response) => {
 
 export const requestPayout = async (req: Request, res: Response) => {
   try {
+     if (!req.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
     const vendorId = req.user.id
     const { amount, bankDetails } = req.body
 

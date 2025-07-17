@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import { Request, Response, NextFunction } from 'express'
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
@@ -6,7 +6,20 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
   if (!token) return res.status(401).json({ message: 'Unauthorized' })
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    // Ensure JWT_SECRET exists
+    const jwtSecret = process.env.JWT_SECRET
+    if (!jwtSecret) {
+      throw new Error('JWT_SECRET is not defined')
+    }
+
+    // Verify and cast the decoded token to the expected type
+    const decoded = jwt.verify(token, jwtSecret) as JwtPayload & { id: string; role: string }
+    
+    // Validate that the decoded token has the required properties
+    if (!decoded.id || !decoded.role) {
+      throw new Error('Invalid token payload')
+    }
+
     req.user = decoded
     next()
   } catch (err) {
@@ -33,6 +46,7 @@ export const verifyVendor = (req: Request, res: Response, next: NextFunction) =>
 
   next()
 }
+
 export const verifyDeliveryBoy = (req: Request, res: Response, next: NextFunction) => {
   const user = req.user
 

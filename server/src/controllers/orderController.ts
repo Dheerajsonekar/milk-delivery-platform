@@ -4,36 +4,60 @@ import DeliveryBoy from '../models/DeliveryBoy'
 
 export const placeOrder = async (req: Request, res: Response) => {
   try {
-    const { products, vendorId, totalAmount, deliveryAddress } = req.body
-    const customerId = req.user.id
+    if (!req.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+    
+    const { products, vendorId, totalAmount, deliveryAddress } = req.body;
+    const customerId = req.user.id;
 
     if (deliveryAddress.street === '' || deliveryAddress.city === '' || deliveryAddress.state === '' || deliveryAddress.zipCode === '') {
-      return res.status(400).json({ message: 'Delivery address is incomplete' })
+      return res.status(400).json({ message: 'Delivery address is incomplete' });
     }
 
-    const availableBoy = await DeliveryBoy.findOne({ isAvailable: true })
+    const availableBoy = await DeliveryBoy.findOne({ isAvailable: true });
 
+    // Create the order data object
+    const orderData = {
+      products,
+      vendorId,
+      totalAmount,
+      customerId,
+      deliveryAddress,
+      deliveryBoyId: null as any,
+      deliveryStatus: 'pending'
+    };
+
+    // If delivery boy is available, assign them
     if (availableBoy) {
-     Order.deliveryBoyId = availableBoy._id
-     Order.deliveryStatus = 'pending'
-
-      availableBoy.assignedOrders.push(Order._id)
-      availableBoy.isAvailable = false
-
-      await availableBoy.save()
-      await Order.save()
+      orderData.deliveryBoyId = availableBoy._id;
+      orderData.deliveryStatus = 'assigned';
+      
+      availableBoy.isAvailable = false;
+      await availableBoy.save();
     }
 
-    const order = await Order.create({ products, vendorId, totalAmount, customerId, deliveryAddress })
-    return res.status(201).json(order)
+    // Create the order with all the data
+    const order = await Order.create(orderData);
+
+    // Update delivery boy's assigned orders after order creation
+    if (availableBoy) {
+      availableBoy.assignedOrders.push(order._id);
+      await availableBoy.save();
+    }
+
+    return res.status(201).json(order);
   } catch (err: any) {
-    return res.status(500).json({ message: 'Failed to place order', error: err.message })
+    return res.status(500).json({ message: 'Failed to place order', error: err.message });
   }
-}
+};
 
 // Update order status (vendor only)
 export const updateOrderStatus = async (req: Request, res: Response) => {
   try {
+     if (!req.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
     const vendorId = req.user.id
     const { orderId, status } = req.body
 
@@ -51,6 +75,9 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
 
 export const getCustomerOrders = async (req: Request, res: Response) => {
   try {
+     if (!req.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
     const customerId = req.user.id
     const orders = await Order.find({ customerId })
       .populate('products.productId', 'name price')
@@ -70,6 +97,9 @@ export const getCustomerOrders = async (req: Request, res: Response) => {
 
 export const cancelCustomerOrder = async (req: Request, res: Response) => {
   try {
+     if (!req.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
     const customerId = req.user.id
     const { orderId } = req.params
     const { reason } = req.body
@@ -96,6 +126,9 @@ export const cancelCustomerOrder = async (req: Request, res: Response) => {
 
 export const getVendorOrders = async (req: Request, res: Response) => {
   try {
+     if (!req.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
     const vendorId = req.user.id
     const orders = await Order.find({ vendorId })
       .populate('products.productId', 'name')

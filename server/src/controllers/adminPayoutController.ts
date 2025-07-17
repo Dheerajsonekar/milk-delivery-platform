@@ -20,8 +20,7 @@ export const updatePayoutStatus = async (req: Request, res: Response) => {
     const payout = await Payout.findByPk(id)
     if (!payout) return res.status(404).json({ message: 'Payout not found' })
 
-    payout.status = status
-    await payout.save()
+   await payout.update({ status });
 
     res.json({ message: `Payout ${status}`, payout })
   } catch (err: any) {
