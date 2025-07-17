@@ -5,8 +5,20 @@ import api from '@/lib/axios'
 import { useRouter } from 'next/navigation'
 import { Plus } from 'lucide-react'
 
+// Define the Product interface
+interface Product {
+  _id: string
+  name: string
+  description: string
+  price: number
+  unit: string
+  quantity: number
+  image?: string
+  vendorId: string
+}
+
 export default function VendorProductsPage() {
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState<Product[]>([]) // Type the state
   const router = useRouter()
 
   useEffect(() => {
@@ -27,12 +39,11 @@ export default function VendorProductsPage() {
     }
   }
 
-
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">My Products</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {products.map((product: any) => (
+        {products.map((product) => (
           <div key={product._id} className="border p-4 rounded shadow">
             <h3 className="text-lg font-bold">{product.name}</h3>
             <p className="text-gray-600">{product.description}</p>
@@ -51,7 +62,6 @@ export default function VendorProductsPage() {
             >
               Delete
             </button>
-
           </div>
         ))}
         <div
