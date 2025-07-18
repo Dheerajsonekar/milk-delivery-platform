@@ -17,7 +17,11 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin:'https://milk-delivery-platform-sjlc.vercel.app',
+  origin:['https://milk-delivery-platform-sjlc.vercel.app',
+    'https://milk-delivery-platform-backend.onrender.com/api',
+    'https://milk-delivery-platform-backend.onrender.com',
+    'http://localhost:3000',
+  ],
   credentials: true,
 }))
 app.use(express.json());
