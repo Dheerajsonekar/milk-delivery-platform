@@ -55,13 +55,16 @@ export const login = async (req: Request, res: Response) => {
       { expiresIn: '7d' }
     );
 
-    // ✅ Set cookie with token
+    // ✅ Updated cookie settings for production
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // set true in prod
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+      secure: true, // Always true for production HTTPS
+      sameSite: 'none', // Required for cross-origin cookies
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      domain: undefined // Don't set domain for cross-origin
     });
+
+    console.log('🍪 Cookie set for production:', token ? 'Token exists' : 'No token');
 
     // ✅ Send user info only (no token in body)
     return res.status(200).json({ user });
