@@ -77,9 +77,29 @@ export const login = async (req: Request, res: Response) => {
 
 
 export const logout = (req: Request, res: Response) => {
-  // For stateless JWT auth, logout is handled on the client side by removing the token
-  res.clearCookie('token');
-  return res.status(200).json({ message: 'Logged out successfully' });
+  try {
+    
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: true, // Match the secure setting from login
+      sameSite: 'none', // Match the sameSite setting from login
+      domain: undefined, // Match the domain setting from login
+      path: '/' // Explicitly set path to ensure proper clearing
+    });
+
+    console.log('🍪 Cookie cleared successfully');
+    
+    return res.status(200).json({ 
+      message: 'Logged out successfully',
+      success: true 
+    });
+  } catch (error) {
+    console.error('Logout error:', error);
+    return res.status(500).json({ 
+      message: 'Logout failed', 
+      error: error instanceof Error ? error.message : 'Unknown error' 
+    });
+  }
 };
 
 
