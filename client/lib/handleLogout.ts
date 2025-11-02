@@ -15,7 +15,7 @@ export function useHandleLogout() {
         withCredentials: true, // Ensure cookies are sent
       })
       
-      console.log('✅ Logout API call successful')
+      console.log(' Logout API call successful')
       
       // Clear any local storage data
       localStorage.removeItem('user')
@@ -27,13 +27,13 @@ export function useHandleLogout() {
       setIsLoggedIn(false)
       setUserRole(null)
       
-      console.log('✅ Auth state cleared')
+      console.log(' Auth state cleared')
       
       // Force a hard redirect to ensure clean state
       window.location.href = '/'
       
     } catch (error) {
-      console.error('❌ Logout failed:', error)
+      console.error(' Logout failed:', error)
       
       // Even if API call fails, clear local state
       localStorage.removeItem('user')

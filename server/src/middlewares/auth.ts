@@ -6,16 +6,16 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
   if (!token) return res.status(401).json({ message: 'Unauthorized' })
 
   try {
-    // Ensure JWT_SECRET exists
+    
     const jwtSecret = process.env.JWT_SECRET
     if (!jwtSecret) {
       throw new Error('JWT_SECRET is not defined')
     }
 
-    // Verify and cast the decoded token to the expected type
+    
     const decoded = jwt.verify(token, jwtSecret) as JwtPayload & { id: string; role: string }
     
-    // Validate that the decoded token has the required properties
+   
     if (!decoded.id || !decoded.role) {
       throw new Error('Invalid token payload')
     }
