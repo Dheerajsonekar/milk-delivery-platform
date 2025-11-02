@@ -15,6 +15,7 @@ export interface IUser extends Document {
   };
   phone: string;
   comparePassword(candidatePassword: string): Promise<boolean>;
+  
 }
 
 const userSchema: Schema<IUser> = new Schema({
@@ -29,6 +30,7 @@ const userSchema: Schema<IUser> = new Schema({
     ifsc: { type: String },
   },
   phone: {type: String, required: true, unique: true},
+  
 }, {
   timestamps: true,
 });

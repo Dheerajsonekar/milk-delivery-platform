@@ -9,6 +9,9 @@ import orderRoutes from './routes/orderRoutes';
 import adminRoutes from './routes/adminRoutes';
 import paymentRoutes from './routes/paymentRoutes';
 import vendorRoutes from './routes/vendorRoutes';
+import aiRoutes from './routes/aiRoutes';
+
+
 
 const app = express();
 
@@ -34,7 +37,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/vendor', vendorRoutes);
-
+app.use('/api/ai', aiRoutes);
 
 
 export default app;
