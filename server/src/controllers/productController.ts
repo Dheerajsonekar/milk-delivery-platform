@@ -66,16 +66,34 @@ export const getProductById = async (req: Request, res: Response) => {
   }
 };
 
-export const getAllProducts = async (_req: Request, res: Response) => {
+export const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const products = await Product.find().populate("vendorId", "name");
-    return res.json(products);
+    const { search, category } = req.query;
+
+    const query: any = {};
+
+    // Filter by category
+    if (category && category !== "All") {
+      query.category = category;
+    }
+
+    // Search by name or description (case-insensitive)
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } }
+      ];
+    }
+
+    const products = await Product.find(query).populate("vendorId", "name");
+
+    res.json(products);
   } catch (err: any) {
-    return res
-      .status(500)
-      .json({ message: "Failed to get products", error: err.message });
+    console.error("Error fetching products:", err);
+    res.status(500).json({ message: "Failed to get products", error: err.message });
   }
 };
+
 
 
 export const getVendorProducts = async (req: Request, res: Response) => {
