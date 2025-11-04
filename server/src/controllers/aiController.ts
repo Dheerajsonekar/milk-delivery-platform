@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { openai } from "../utils/openai";
 import Product, { IProduct } from "../models/Product";
 
-// 🧮 Cosine similarity helper
+// Cosine similarity helper
 function cosineSimilarity(a: number[], b: number[]): number {
   if (!a.length || !b.length) return 0;
   const dot = a.reduce((sum, ai, i) => sum + ai * (b[i] || 0), 0);
@@ -12,7 +12,7 @@ function cosineSimilarity(a: number[], b: number[]): number {
   return magA && magB ? dot / (magA * magB) : 0;
 }
 
-// 🧠 Generate embeddings for all products
+//Generate embeddings for all products
 export const generateEmbeddings = async (_req: Request, res: Response) => {
   try {
     const products: IProduct[] = await Product.find();
@@ -35,7 +35,7 @@ export const generateEmbeddings = async (_req: Request, res: Response) => {
   }
 };
 
-// 🧩 Get recommendations for a specific product
+// Get recommendations for a specific product
 export const getRecommendations = async (req: Request, res: Response) => {
   try {
     const productId = req.params.id;
