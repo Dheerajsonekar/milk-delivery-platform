@@ -10,8 +10,11 @@ export const createProduct = async (req: Request, res: Response) => {
     }
 
     const vendorId = req.user.id;
-    const { name, price, unit, quantity, description } = req.body;
-
+    const { name, price, unit, quantity, description, category } = req.body;
+    
+    if(!category){
+      return res.status(400).json({ message: "Product category is required" });
+    }
     
     const imageUrl = (req.file as Express.Multer.File)?.path;
 
@@ -29,7 +32,9 @@ export const createProduct = async (req: Request, res: Response) => {
       quantity,
       description,
       vendorId,
-      image: imageUrl, // cloudinary URL
+      image: imageUrl,
+      category,
+
     });
 
     return res.status(201).json({
@@ -82,11 +87,12 @@ export const updateProduct = async (req: Request, res: Response) => {
     const vendorId = req.user.id;
     const productId = req.params.id;
 
-    
+    const {category} = req.body;
     const imageUrl = (req.file as Express.Multer.File)?.path;
     const updateData = {
       ...req.body,
       ...(imageUrl && { image: imageUrl }),
+      ...(category && {category}),
     };
 
     const updated = await Product.findOneAndUpdate(

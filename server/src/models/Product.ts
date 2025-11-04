@@ -9,6 +9,7 @@ export interface IProduct extends Document {
   vendorId: mongoose.Types.ObjectId;
   image?: string;
   description: string;
+  category?: string;
   embedding?: number[];
 }
 
@@ -21,7 +22,7 @@ const productSchema = new Schema<IProduct>(
     vendorId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     image: { type: String },
     description: { type: String, default: '' },
-    
+    category: { type: String, required: true, index: true },
     embedding: {
       type: [Number],
       default: [],

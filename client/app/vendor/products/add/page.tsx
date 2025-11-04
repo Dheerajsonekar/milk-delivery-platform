@@ -8,15 +8,19 @@ export default function AddProductPage() {
   const router = useRouter()
   const [form, setForm] = useState({
     name: '',
+    category: '',
     description: '',
     price: '',
     unit: '',
     quantity: '',
+     
   })
   const [image, setImage] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
@@ -35,11 +39,13 @@ export default function AddProductPage() {
 
     const formData = new FormData()
     formData.append('name', form.name)
+    formData.append('category', form.category) 
     formData.append('description', form.description)
     formData.append('price', form.price)
     formData.append('unit', form.unit)
     formData.append('quantity', form.quantity)
-    formData.append('image', image) 
+    
+    formData.append('image', image)
 
     try {
       setLoading(true)
@@ -67,6 +73,26 @@ export default function AddProductPage() {
           onChange={handleChange}
           required
         />
+        <select
+          name="category"
+          value={form.category}
+          onChange={handleChange}
+          className="w-full border px-3 py-2 rounded"
+          required
+        >
+          <option value="">Select Category</option>
+          <option value="Milk">Milk</option>
+          <option value="Curd">Curd</option>
+          <option value="Butter">Butter</option>
+          <option value="Cheese">Cheese</option>
+          <option value="Ghee">Ghee</option>
+          <option value="Paneer">Paneer</option>
+          <option value="Flavored Milk">Flavored Milk</option>
+          <option value="Fruit">Fruit</option>
+          <option value="Dry Fruit">Dry Fruit</option>
+          <option value="Vegetable">Vegetable</option>
+          <option value="Other">Other</option>
+        </select>
 
         <textarea
           name="description"
@@ -103,6 +129,9 @@ export default function AddProductPage() {
         />
 
         
+        
+
+        
         <input
           type="file"
           accept="image/*"
@@ -111,7 +140,7 @@ export default function AddProductPage() {
           required
         />
 
-        {/* Preview selected image */}
+        
         {image && (
           <div className="mt-2 text-center">
             <img
