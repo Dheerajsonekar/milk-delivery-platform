@@ -1,8 +1,8 @@
 import Razorpay from 'razorpay'
 
 
-console.log('Razorpay KEY_ID:', process.env.RAZORPAY_KEY_ID) 
-console.log('Razorpay KEY_SECRET:', process.env.RAZORPAY_KEY_SECRET)
+// console.log('Razorpay KEY_ID:', process.env.RAZORPAY_KEY_ID) 
+// console.log('Razorpay KEY_SECRET:', process.env.RAZORPAY_KEY_SECRET)
 
 const razorpay = new Razorpay({
   

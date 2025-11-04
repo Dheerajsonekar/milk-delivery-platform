@@ -9,10 +9,10 @@ const startServer = async () => {
   await connectPostgres();
 
   await Payout.sync();
-  console.log('PostgreSQL database connected successfully');
+  
 
   app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
   });
 };
 
