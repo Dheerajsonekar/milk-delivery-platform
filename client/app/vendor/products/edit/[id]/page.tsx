@@ -92,7 +92,7 @@ export default function EditProductPage() {
           className="w-full border px-3 py-2 rounded"
           required
         >
-          <option value="">Select Category</option>
+          <option value="" disabled>Select Category</option>
           <option value="Milk">Milk</option>
           <option value="Curd">Curd</option>
           <option value="Butter">Butter</option>
@@ -100,6 +100,10 @@ export default function EditProductPage() {
           <option value="Ghee">Ghee</option>
           <option value="Paneer">Paneer</option>
           <option value="Flavored Milk">Flavored Milk</option>
+          <option value="Fruit">Fruit</option>
+          <option value="Vegetable">Vegetable</option>
+          <option value="Dry Fruit">Dry Fruit</option>
+          <option value="Other">Other</option>
         </select>
 
         <textarea

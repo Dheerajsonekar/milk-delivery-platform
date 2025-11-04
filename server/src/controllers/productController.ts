@@ -49,6 +49,23 @@ export const createProduct = async (req: Request, res: Response) => {
   }
 };
 
+export const getProductById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const product = await Product.findById(id).populate("vendorId", "name");
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.json(product);
+  } catch (err: any) {
+    console.error("Error fetching product:", err.message);
+    res.status(500).json({ message: "Failed to fetch product" });
+  }
+};
+
 export const getAllProducts = async (_req: Request, res: Response) => {
   try {
     const products = await Product.find().populate("vendorId", "name");
