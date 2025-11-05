@@ -79,7 +79,7 @@ export const getRecommendations = async (req: Request, res: Response) => {
         score: cosineSimilarity(target.embedding ?? [], p.embedding ?? []),
       }))
       .sort((a, b) => b.score - a.score)
-      .slice(0, 5)
+      .slice(0, 4)
       .map((r) => r.product);
 
     return res.json({ recommendations: recs });
