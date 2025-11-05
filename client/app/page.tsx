@@ -12,7 +12,7 @@ export default function HomePage() {
   const [category, setCategory] = useState('All')
   const { isLoggedIn, loading } = useAuth()
 
-  // 🕐 Debounce search for smoother performance
+  // Debounce search for smoother performance
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       fetchProducts()
@@ -50,7 +50,7 @@ export default function HomePage() {
           {isLoggedIn ? 'Available Products' : 'FreshMilk Products'}
         </h2>
 
-        {/* 🔍 Search and Filter Bar */}
+        {/*  Search and Filter Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
           <input
             type="text"
