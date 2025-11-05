@@ -1,44 +1,48 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import api from '@/lib/axios'
 import ProductCard from '@/components/ProductCard'
 import { useAuth } from '@/context/auth-context'
 
 export default function HomePage() {
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState<any[]>([])
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('All')
-  const { isLoggedIn, loading } = useAuth()
-
-  // Debounce search for smoother performance
-  useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      fetchProducts()
-    }, 400)
-    return () => clearTimeout(delayDebounce)
-  }, [search, category])
+  const [loadingProducts, setLoadingProducts] = useState(true)
+  const { isLoggedIn, loading: authLoading } = useAuth()
 
   const fetchProducts = async () => {
     try {
-      const res = await api.get('/products', {
-        params: { search, category },
-      })
+      setLoadingProducts(true)
+      const res = await api.get('/products', { params: { search, category } })
       setProducts(res.data)
     } catch (err) {
       console.error('Failed to fetch products:', err)
+    } finally {
+      setLoadingProducts(false)
     }
   }
 
+  // Initial load
   useEffect(() => {
     fetchProducts()
   }, [])
 
-  if (loading) {
+  // Debounced search + category
+  useEffect(() => {
+    const delay = setTimeout(() => fetchProducts(), 400)
+    return () => clearTimeout(delay)
+  }, [search, category])
+
+  // Global auth + product loading overlay
+  if (authLoading || loadingProducts) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-yellow-50">
-        <p className="text-lg text-gray-600">Checking authentication...</p>
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-10 border-4 border-green-600 border-t-transparent rounded-full animate-spin mb-3"></div>
+          <p className="text-gray-600 text-lg font-medium">Loading...</p>
+        </div>
       </div>
     )
   }
@@ -50,7 +54,7 @@ export default function HomePage() {
           {isLoggedIn ? 'Available Products' : 'FreshMilk Products'}
         </h2>
 
-        {/*  Search and Filter Bar */}
+        {/* Search & Filter */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
           <input
             type="text"
@@ -80,17 +84,15 @@ export default function HomePage() {
         </div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.length > 0 ? (
-            products.map((product: any) => (
+        {products.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {products.map((product) => (
               <ProductCard key={product._id} product={product} />
-            ))
-          ) : (
-            <p className="text-center text-gray-600 col-span-full">
-              No products found.
-            </p>
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-gray-600">No products found.</p>
+        )}
       </div>
     </div>
   )

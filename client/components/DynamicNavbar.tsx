@@ -7,26 +7,27 @@ import VendorNavbar from './VendorNavbar'
 import AdminNavbar from './AdminNavbar'
 import DeliveryBoyNavbar from './DeliveryBoyNavbar'
 
-
 export default function DynamicNavbar() {
   const { loading, isLoggedIn, userRole } = useAuth()
 
-  if (loading) {
+  // While loading, show a lightweight top bar 
   return (
-    <div className="w-full bg-yellow-50 text-center py-2 text-gray-500 text-sm">
-      Checking login status...
-    </div>
+    <>
+      {loading ? (
+        <div className="w-full bg-yellow-50 py-3 text-center text-gray-500 text-sm animate-pulse">
+          Loading...
+        </div>
+      ) : !isLoggedIn ? (
+        <PublicNavbar />
+      ) : userRole === 'customer' ? (
+        <CustomerNavbar />
+      ) : userRole === 'vendor' ? (
+        <VendorNavbar />
+      ) : userRole === 'admin' ? (
+        <AdminNavbar />
+      ) : userRole === 'deliveryBoy' ? (
+        <DeliveryBoyNavbar />
+      ) : null}
+    </>
   )
-}
-
-
-  
-  if (!isLoggedIn) return <PublicNavbar />
-  if (userRole === 'customer') return <CustomerNavbar />
-  if (userRole === 'vendor') return <VendorNavbar />
-  if( userRole === 'admin') return <AdminNavbar />
-  if(userRole === 'deliveryBoy') return <DeliveryBoyNavbar />
-
-
-  return null
 }
