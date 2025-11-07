@@ -55,7 +55,7 @@ export const login = async (req: Request, res: Response) => {
       { expiresIn: '7d' }
     );
 
-    // ✅ Updated cookie settings for production
+    // Updated cookie settings for production
     res.cookie('token', token, {
       httpOnly: true,
       secure: true, // Always true for production HTTPS
@@ -64,9 +64,9 @@ export const login = async (req: Request, res: Response) => {
       domain: undefined // Don't set domain for cross-origin
     });
 
-    console.log('🍪 Cookie set for production:', token ? 'Token exists' : 'No token');
+    console.log(' Cookie set for production:', token ? 'Token exists' : 'No token');
 
-    // ✅ Send user info only (no token in body)
+    //  Send user info only (no token in body)
     return res.status(200).json({ user });
 
   } catch (err: any) {
@@ -87,7 +87,7 @@ export const logout = (req: Request, res: Response) => {
       path: '/' // Explicitly set path to ensure proper clearing
     });
 
-    console.log('🍪 Cookie cleared successfully');
+    console.log(' Cookie cleared successfully');
     
     return res.status(200).json({ 
       message: 'Logged out successfully',
